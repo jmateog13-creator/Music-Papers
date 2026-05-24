@@ -1,0 +1,98 @@
+/* ============================================================================
+ * DEV-TOOLBAR.CSS — Cabina d'edició pilot (oculta · Ctrl+Shift+D)
+ * ============================================================================ */
+
+.dev-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--ink, #1a1612);
+  color: var(--paper, #f4f1ea);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  animation: devSlideDown 0.3s ease;
+  flex-wrap: wrap;
+}
+
+@keyframes devSlideDown {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
+}
+
+.dev-toolbar[hidden] { display: none !important; }
+
+.dev-toolbar__brand {
+  font-weight: 700;
+  color: #ffb800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.dev-toolbar__active {
+  color: #00ff88;
+  font-style: italic;
+  padding: 0 0.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0 0.3rem;
+}
+
+.dev-toolbar button {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--paper, #f4f1ea);
+  padding: 0.35rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  letter-spacing: 0.05em;
+}
+
+.dev-toolbar button:hover {
+  background: rgba(255, 184, 0, 0.25);
+  border-color: rgba(255, 184, 0, 0.6);
+}
+
+.dev-toolbar__close {
+  margin-left: auto;
+  background: rgba(255, 59, 48, 0.2) !important;
+  border-color: rgba(255, 59, 48, 0.5) !important;
+}
+
+.dev-toolbar__close:hover {
+  background: rgba(255, 59, 48, 0.5) !important;
+}
+
+/* Avís toast quan es dispara una acció dev */
+.dev-toast {
+  position: fixed;
+  top: 3.5rem;
+  right: 1rem;
+  z-index: 9998;
+  background: var(--ink, #1a1612);
+  color: #00ff88;
+  padding: 0.7rem 1.1rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  border-left: 3px solid #00ff88;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 1.7s forwards;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(20px); }
+}

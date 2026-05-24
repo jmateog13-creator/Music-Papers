@@ -1,0 +1,630 @@
+/* ============================================================================
+ * GAMES.CSS — Estils específics dels 4 minijocs
+ * Notedoku · Staff Match · Mots Amagats · Crossnote
+ * ============================================================================ */
+
+/* ============================================================================
+ * NOTEDOKU — Latin Square 7×7
+ * ============================================================================ */
+.notedoku {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.notedoku__legend {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  text-align: center;
+  max-width: 640px;
+  margin: 0;
+}
+
+.notedoku__legend strong { color: var(--ink); font-style: normal; }
+
+.notedoku__grid {
+  display: grid;
+  gap: 0;
+  width: min(490px, 92vw);
+  aspect-ratio: 1;
+  border: 3px solid var(--ink);
+  background: var(--paper-dark);
+}
+
+.notedoku__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headline);
+  font-size: clamp(0.95rem, 2.3vw, 1.25rem);
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink-faded);
+  user-select: none;
+  position: relative;
+  padding: 0;
+}
+
+.notedoku__cell.is-locked {
+  background: var(--paper-shade);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.notedoku__cell.is-locked::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px dotted var(--ink-soft);
+  pointer-events: none;
+}
+
+.notedoku__cell input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: var(--font-headline);
+  font-size: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  outline: none;
+  padding: 0;
+  caret-color: var(--sepia);
+}
+
+.notedoku__cell input:focus {
+  background: rgba(139, 107, 63, 0.18);
+}
+
+.notedoku__cell.is-correct {
+  background: rgba(45, 90, 45, 0.22);
+}
+.notedoku__cell.is-correct input { color: var(--green-correct); }
+
+.notedoku__cell.is-wrong {
+  background: var(--error-glow);
+  animation: cellShake 0.35s;
+}
+.notedoku__cell.is-wrong input { color: var(--red-seal); }
+
+@keyframes cellShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* ============================================================================
+ * STAFF MATCH
+ * ============================================================================ */
+.staff-match {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.staff-match__steps {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid var(--ink-soft);
+  background: var(--paper-shade);
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.staff-match__step strong { color: var(--ink); font-style: normal; }
+.staff-match__step em { color: var(--sepia); font-style: normal; font-weight: 700; letter-spacing: 0.08em; }
+.staff-match__step-arrow { color: var(--sepia); font-size: 1.2rem; }
+
+.staff-match__feedback {
+  font-style: italic;
+  font-size: 0.95rem;
+  min-height: 1.5em;
+  padding: 0.4rem 1rem;
+  text-align: center;
+  border-left: 3px solid transparent;
+  transition: all 0.25s ease;
+}
+.staff-match__feedback.is-info { color: var(--ink-soft); border-color: var(--sepia); }
+.staff-match__feedback.is-warn { color: var(--red-seal); border-color: var(--red-seal); }
+.staff-match__feedback.is-good { color: var(--green-correct); border-color: var(--green-correct); font-weight: 700; }
+
+.staff-match__progress {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.staff-match__progress-pip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.staff-match__progress-pip.is-found {
+  background: var(--green-correct);
+  color: var(--paper);
+  border-color: var(--green-correct);
+  animation: pipPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pipPop {
+  0% { transform: scale(0.5); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.staff-match__panels {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+.staff-match__panel {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 1rem;
+  position: relative;
+}
+
+.staff-match__panel-title {
+  position: absolute;
+  top: -0.7rem;
+  left: 1rem;
+  background: var(--paper);
+  padding: 0 0.6rem;
+  font-family: var(--font-headline);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.staff-match__divider {
+  width: 2px;
+  height: 80%;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ink) 0,
+    var(--ink) 8px,
+    transparent 8px,
+    transparent 14px
+  );
+}
+
+.staff-match__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.staff-match__svg .note-target {
+  cursor: pointer;
+  transition: filter 0.15s ease, fill 0.15s ease;
+}
+
+.staff-match__svg .note-target:hover {
+  filter: drop-shadow(0 0 6px rgba(139, 107, 63, 0.6));
+}
+
+/* GLOW AMBAR: nota seleccionada al panell esquerre. Sobre paper s'aconsegueix
+ * un "neon" càlid amb sèpia intens i halo daurat. */
+.staff-match__svg .note-target.is-selected {
+  fill: #d97706 !important;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 184, 0, 0.95))
+    drop-shadow(0 0 16px rgba(255, 140, 0, 0.7))
+    drop-shadow(0 0 24px rgba(217, 119, 6, 0.5));
+  animation: selectedPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes selectedPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); transform-origin: center; }
+}
+
+/* Pista subtle a la nota equivalent al panell dret */
+.staff-match__svg .note-target.is-partner-hint {
+  filter: drop-shadow(0 0 6px rgba(255, 184, 0, 0.45));
+}
+
+.staff-match__svg .note-target.is-found {
+  fill: var(--green-correct) !important;
+  filter: drop-shadow(0 0 8px rgba(45, 90, 45, 0.7));
+  animation: none;
+}
+
+.staff-match__svg .note-target.is-miss {
+  animation: missFlash 0.5s;
+}
+
+@keyframes missFlash {
+  0% { filter: drop-shadow(0 0 0 transparent); }
+  50% { filter: drop-shadow(0 0 12px rgba(139, 26, 26, 0.95)); fill: var(--red-seal) !important; }
+  100% { filter: drop-shadow(0 0 0 transparent); }
+}
+
+@media (max-width: 820px) {
+  .staff-match__panels { grid-template-columns: 1fr; }
+  .staff-match__divider { width: 80%; height: 2px;
+    background: repeating-linear-gradient(to right, var(--ink) 0, var(--ink) 8px, transparent 8px, transparent 14px);
+    margin: 0 auto;
+  }
+}
+
+/* ============================================================================
+ * MOTS AMAGATS — layout compacte sense scroll (2 columnes)
+ * ============================================================================ */
+.mots-amagats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 980px;
+  align-items: stretch;
+}
+
+.mots-amagats__banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ink-soft);
+  background: var(--paper-shade);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mots-amagats__level {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.mots-amagats__warn em {
+  color: var(--red-seal);
+  font-weight: 700;
+}
+
+.mots-amagats__main {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.4rem;
+  width: 100%;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .mots-amagats__main { grid-template-columns: 1fr; }
+}
+
+.mots-amagats__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.mots-amagats__decoder {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 0.8rem 1rem;
+  text-align: center;
+}
+
+.mots-amagats__decoder-title {
+  font-family: var(--font-headline);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mots-amagats__targets {
+  border: 2px solid var(--ink);
+  padding: 0.8rem 1rem;
+  background: var(--paper);
+}
+
+.mots-amagats__targets-title {
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+  border-bottom: var(--rule-hair);
+  padding-bottom: 0.3rem;
+}
+
+.mots-amagats__target {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  font-family: var(--font-headline);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.mots-amagats__target.is-found {
+  text-decoration: line-through;
+  color: var(--green-correct);
+}
+
+.mots-amagats__target-mark {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--green-correct);
+}
+
+.mots-amagats__target.is-found .mots-amagats__target-mark {
+  border-color: var(--green-correct);
+}
+
+.mots-amagats__grid {
+  display: grid;
+  gap: 2px;
+  background: var(--ink);
+  padding: 2px;
+  border: 2px solid var(--ink);
+  user-select: none;
+  touch-action: none;
+  width: 100%;
+  max-width: 480px;
+  justify-self: center;
+}
+
+.mots-amagats__cell {
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headline);
+  font-size: clamp(0.75rem, 1.7vw, 1rem);
+  font-weight: 700;
+  color: var(--ink);
+  aspect-ratio: 1;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s ease;
+}
+
+.mots-amagats__cell.is-selecting {
+  background: rgba(139, 107, 63, 0.35);
+}
+
+.mots-amagats__cell.is-found {
+  background: rgba(45, 90, 45, 0.35);
+  color: var(--green-correct);
+}
+
+.mots-amagats__levelup {
+  margin-top: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-left: 3px solid var(--green-correct);
+  background: rgba(45, 90, 45, 0.08);
+  color: var(--green-correct);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.mots-amagats__levelup strong { color: var(--green-correct); font-style: normal; }
+
+/* ============================================================================
+ * CROSSNOTE
+ * ============================================================================ */
+.crossnote {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1080px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .crossnote { grid-template-columns: 1fr; }
+}
+
+.crossnote__grid {
+  display: grid;
+  background: var(--ink);
+  padding: 2px;
+  gap: 1px;
+  border: 2px solid var(--ink);
+}
+
+.crossnote__cell {
+  width: clamp(36px, 5vw, 48px);
+  height: clamp(36px, 5vw, 48px);
+  background: var(--paper);
+  position: relative;
+}
+
+.crossnote__cell--block {
+  background: var(--ink);
+}
+
+.crossnote__cell-number {
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  font-size: 0.65rem;
+  font-family: var(--font-body);
+  color: var(--ink-soft);
+  font-weight: 700;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.crossnote__cell input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: var(--font-headline);
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  outline: none;
+  padding: 0;
+  caret-color: var(--sepia);
+}
+
+.crossnote__cell input:focus {
+  background: rgba(139, 107, 63, 0.18);
+}
+
+.crossnote__cell.is-solved input {
+  background: rgba(45, 90, 45, 0.25);
+  color: var(--green-correct);
+}
+
+.crossnote__cell.is-wrong input {
+  background: var(--error-glow);
+  color: var(--red-seal);
+  animation: cellShake 0.35s;
+}
+
+.crossnote__clues {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .crossnote__clues { grid-template-columns: 1fr; }
+}
+
+.crossnote__clue-block {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  padding: 1rem 1.2rem;
+}
+
+.crossnote__clue-block-title {
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0 0 0.6rem;
+  color: var(--ink);
+  border-bottom: var(--rule-hair);
+  padding-bottom: 0.4rem;
+}
+
+.crossnote__clue {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  padding: 0.4rem 0;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.crossnote__clue:hover { color: var(--ink); }
+
+.crossnote__clue.is-active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.crossnote__clue.is-solved {
+  color: var(--green-correct);
+  text-decoration: line-through;
+  cursor: default;
+}
+
+.crossnote__clue-num {
+  font-weight: 700;
+  color: var(--ink);
+  min-width: 1.8em;
+}
+
+.crossnote__clue.is-fa::after {
+  content: '⚠';
+  color: var(--red-seal);
+  margin-left: 0.3rem;
+  font-size: 0.85rem;
+}
+
+/* ============================================================================
+ * Pentagrama SVG compartit (estils mínims base)
+ * ============================================================================ */
+.pentagrama-svg .staff-line {
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.pentagrama-svg .ledger-line {
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.pentagrama-svg .clef-text {
+  font-family: 'Apple Symbols', 'Noto Music', 'Bravura', 'DejaVu Sans', serif;
+  fill: var(--ink);
+}
+
+.pentagrama-svg .note-head {
+  fill: var(--ink);
+}
+
+.pentagrama-svg .accidental {
+  font-family: serif;
+  font-size: 28px;
+  fill: var(--ink);
+  font-weight: 700;
+}
+
+.pentagrama-svg .note-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  fill: var(--ink-soft);
+  font-style: italic;
+  text-anchor: middle;
+}

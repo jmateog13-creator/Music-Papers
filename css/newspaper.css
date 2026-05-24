@@ -1,0 +1,370 @@
+/* ============================================================================
+ * NEWSPAPER.CSS — Paleta paper, tipografies serif, layout de portada
+ * Estètica: premsa decimonònica · paper envellit · tinta sèpia
+ * ============================================================================ */
+
+:root {
+  /* Paleta de paper i tinta */
+  --paper:          #f4f1ea;
+  --paper-dark:     #e8e2d3;
+  --paper-shade:    #d9d1bd;
+  --ink:            #1a1612;
+  --ink-soft:       #3a312a;
+  --ink-faded:      #6b5e52;
+  --ink-line:       #2a221c;
+  --sepia:          #8a6b3f;
+  --sepia-soft:     #b89668;
+  --red-seal:       #8b1a1a;
+  --green-correct:  #2d5a2d;
+  --error-glow:     rgba(139, 26, 26, 0.18);
+
+  /* Tipografies */
+  --font-headline:  'Playfair Display', 'EB Garamond', Georgia, serif;
+  --font-body:      'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-fraktur:   'UnifrakturCook', 'Playfair Display', serif;
+
+  /* Espaiat (escala "modular" tipogràfica) */
+  --gutter:     1.5rem;
+  --rule-thin:  1px solid var(--ink);
+  --rule-thick: 3px double var(--ink);
+  --rule-hair:  1px solid var(--ink-faded);
+}
+
+/* ── Reset minimalista ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+button { font: inherit; cursor: pointer; }
+
+/* L'atribut HTML `hidden` ha de guanyar sempre, fins i tot quan una regla
+ * de classe declara `display: flex/grid/block`. Sense això, els overlays
+ * (.victory-modal, .game-landing, .game-stage…) apareixen visibles malgrat
+ * el `hidden`. */
+[hidden] { display: none !important; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+  /* Textura de paper envellit amb gradients sobreposats */
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139, 107, 63, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(139, 107, 63, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(217, 209, 189, 0.3) 0%, transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(26, 22, 18, 0.012) 2px,
+      rgba(26, 22, 18, 0.012) 3px
+    );
+  line-height: 1.55;
+  min-height: 100vh;
+}
+
+/* ── Contenidor principal del diari ────────────────────────────────────── */
+.newspaper {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+  position: relative;
+}
+
+/* Doble vora exterior tipus quadre de premsa */
+.newspaper::before {
+  content: '';
+  position: absolute;
+  inset: 1rem;
+  border: var(--rule-thick);
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* ============================================================================
+ * MASTHEAD
+ * ============================================================================ */
+.masthead {
+  text-align: center;
+  padding: 1.5rem 1rem 1rem;
+  border-bottom: var(--rule-thick);
+  margin-bottom: 1.5rem;
+}
+
+.masthead__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  border-bottom: var(--rule-hair);
+  padding-bottom: 0.6rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.masthead__title {
+  font-family: var(--font-fraktur);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--ink);
+  text-shadow: 1px 1px 0 rgba(26, 22, 18, 0.06);
+}
+
+.masthead__rule {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.6rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.masthead__rule span {
+  font-size: 1.4rem;
+  color: var(--sepia);
+}
+
+/* ============================================================================
+ * HERO (introducció a la secció de passatemps)
+ * ============================================================================ */
+.hero {
+  text-align: center;
+  padding: 1.5rem 2rem 2rem;
+  border-bottom: var(--rule-thin);
+  margin-bottom: 2rem;
+}
+
+.hero__kicker {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--sepia);
+  margin: 0 0 0.4rem;
+  font-weight: 500;
+}
+
+.hero__headline {
+  font-family: var(--font-headline);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 900;
+  margin: 0 0 0.8rem;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.hero__lede {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  /* Capçal: la primera lletra com a "drop cap" suau */
+  text-align: justify;
+  hyphens: auto;
+}
+
+.hero__lede::first-letter {
+  font-family: var(--font-headline);
+  font-size: 2.4em;
+  font-weight: 900;
+  float: left;
+  line-height: 0.85;
+  padding: 0.05em 0.1em 0 0;
+  color: var(--ink);
+  font-style: normal;
+}
+
+/* ============================================================================
+ * COLUMNES (4 articles · passatemps)
+ * ============================================================================ */
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0;
+  border-top: var(--rule-thick);
+  border-bottom: var(--rule-thick);
+}
+
+.column {
+  padding: 1.6rem 1.4rem 1.8rem;
+  border-right: var(--rule-thin);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.25s ease;
+}
+
+.column:last-child { border-right: none; }
+
+.column:hover {
+  background: rgba(139, 107, 63, 0.05);
+}
+
+.column__tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--sepia);
+  font-weight: 500;
+  border-bottom: 1px dotted var(--sepia-soft);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.8rem;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.column__title {
+  font-family: var(--font-headline);
+  font-size: 1.7rem;
+  font-weight: 900;
+  margin: 0 0 0.2rem;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.column__subtitle {
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.8rem;
+}
+
+.column__rule {
+  height: 0;
+  border-top: var(--rule-hair);
+  margin: 0.4rem 0 0.9rem;
+  position: relative;
+}
+
+.column__rule::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--paper);
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--sepia);
+}
+
+.column__body {
+  font-size: 0.97rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-align: justify;
+  hyphens: auto;
+  margin: 0 0 1.2rem;
+  flex: 1;
+}
+
+.column__cta {
+  background: transparent;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.7rem 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: all 0.2s ease;
+  align-self: stretch;
+  position: relative;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.column__cta::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--ink);
+  pointer-events: none;
+  transition: inset 0.2s ease;
+}
+
+.column__cta:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.column__cta:hover::before {
+  border-color: var(--paper);
+  inset: 5px;
+}
+
+/* ── Segell "Completat ✓" sobre articles ja guanyats ───────────────────── */
+.column.is-completed {
+  background: rgba(45, 90, 45, 0.05);
+}
+
+.column__seal {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headline);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--green-correct);
+  background: var(--paper);
+  border: 2px solid var(--green-correct);
+  border-radius: 50%;
+  box-shadow:
+    0 2px 6px rgba(45, 90, 45, 0.25),
+    inset 0 0 0 1px rgba(45, 90, 45, 0.15);
+  transform: rotate(-12deg);
+  z-index: 2;
+  animation: sealStamp 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes sealStamp {
+  0% { opacity: 0; transform: rotate(-12deg) scale(2.2); }
+  60% { opacity: 1; transform: rotate(-12deg) scale(0.92); }
+  100% { opacity: 1; transform: rotate(-12deg) scale(1); }
+}
+
+/* ============================================================================
+ * FOOTER del diari
+ * ============================================================================ */
+.newspaper-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: var(--rule-hair);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--ink-faded);
+  letter-spacing: 0.04em;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.newspaper-footer__hint em {
+  color: var(--ink-soft);
+}
+
+/* ── Responsiu ─────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .newspaper { padding: 1.5rem 1rem 3rem; }
+  .newspaper::before { inset: 0.5rem; }
+  .masthead__top { flex-direction: column; gap: 0.4rem; text-align: center; }
+  .columns { grid-template-columns: 1fr; }
+  .column { border-right: none; border-bottom: var(--rule-thin); }
+  .column:last-child { border-bottom: none; }
+}
