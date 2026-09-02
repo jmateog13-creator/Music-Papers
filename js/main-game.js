@@ -78,6 +78,7 @@
     $('stage-hud').innerHTML = '';
     game.init($('game-board'), $('stage-hud'));
     hasPlayed = true;
+    if (global.AulaTechBridge) global.AulaTechBridge.startClock();
   }
 
   function startTutorial() {
@@ -117,6 +118,7 @@
     if (text) $('victory-text').textContent = text;
     $('victory-modal').hidden = false;
     if (gameId) markCompleted(gameId);
+    if (gameId && global.AulaTechBridge) global.AulaTechBridge.sendOnce(gameId, { completat: true });
   }
 
   /* ── Wire-up ──────────────────────────────────────────────────────── */
