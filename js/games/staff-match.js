@@ -88,6 +88,10 @@
     }
   ];
 
+  // Mode Primer (1r ESO): només el nivell I (sense alteracions)
+  const CURS1 = new URLSearchParams(location.search).get('curs') === '1';
+  if (CURS1) LEVELS.length = 1;
+
   let boardEl = null;
   let hudEl = null;
   let levelIdx = 0;
@@ -315,7 +319,7 @@
   function handleFinalWin() {
     state.solved = true;
     setTimeout(() => global.NotePass.Router.showVictory(
-      'Has dominat els cinc nivells. Cap diferència se t\'escapa.'
+      CURS1 ? 'Has trobat totes les diferències.' : 'Has dominat els cinc nivells. Cap diferència se t\'escapa.'
     ), 600);
   }
 
@@ -360,7 +364,7 @@
         target: '.staff-match__panel--right'
       },
       {
-        text: 'Hi ha <strong>5 nivells</strong> de dificultat creixent. Comences amb pitches simples i acabes amb el rang complet. Quan completis un nivell, apareixerà el botó <strong>Següent nivell →</strong> a dalt a la dreta.'
+        text: (CURS1 ? 'Troba totes les diferències per acabar el joc.' : 'Hi ha <strong>5 nivells</strong> de dificultat creixent. Comences amb pitches simples i acabes amb el rang complet. Quan completis un nivell, apareixerà el botó <strong>Següent nivell →</strong> a dalt a la dreta.') + ''
       }
     ];
     global.NotePass.Tutorial.run(steps, onDone);
