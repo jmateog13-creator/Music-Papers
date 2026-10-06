@@ -16,7 +16,8 @@
     'crossnote':    'Crossnote'
   };
 
-  const LS_COMPLETED_KEY = 'notepass:completed';
+  // 1r ESO (?curs=1) desa els jocs fets a part
+  const LS_COMPLETED_KEY = 'notepass:completed' + (new URLSearchParams(location.search).get('curs') === '1' ? '_c1' : '');
 
   function getCompleted() {
     try {
@@ -102,7 +103,7 @@
   }
 
   function backToFront() {
-    window.location.href = 'index.html';
+    window.location.href = 'index.html' + location.search;   // 1r: manté ?curs=1
   }
 
   function resetGame() {
@@ -124,6 +125,7 @@
   /* ── Wire-up ──────────────────────────────────────────────────────── */
   document.addEventListener('DOMContentLoaded', () => {
     init();
+    if (location.search) document.querySelectorAll('a[href="index.html"]').forEach(a => { a.href = 'index.html' + location.search; });
 
     document.addEventListener('click', (e) => {
       const el = e.target.closest('[data-action]');

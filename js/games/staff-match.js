@@ -380,6 +380,12 @@
              'és un error trobat. Cinc nivells de complexitat creixent.',
     metaTag: 'Observació · 5 nivells · Clau de Sol'
   };
+  if (CURS1) Object.assign(meta, {   // 1r: un sol nivell, frases curtes
+    pitch: 'Les diferències del pentagrama · 1r ESO',
+    context: 'Hi ha dos pentagrames. El de la dreta és una còpia amb errors. ' +
+             'Clica una nota a l\'esquerra i després la del mateix lloc a la dreta. Troba els errors!',
+    metaTag: 'Observació · 1 nivell · Clau de sol'
+  });
 
   global.NotePass = global.NotePass || {};
   global.NotePass.Games = global.NotePass.Games || {};

@@ -7,9 +7,12 @@
 (function () {
   'use strict';
 
-  const LS_COMPLETED_KEY = 'notepass:completed';
+  // 1r ESO (?curs=1) desa els jocs fets a part
+  const LS_COMPLETED_KEY = 'notepass:completed' + (new URLSearchParams(location.search).get('curs') === '1' ? '_c1' : '');
 
   document.addEventListener('DOMContentLoaded', () => {
+    // 1r ESO: els enllaços als passatemps mantenen ?curs=1
+    if (location.search.includes('curs=1')) document.querySelectorAll('a[href$=".html"]').forEach(a => { a.href = a.getAttribute('href') + location.search; });
     setMastheadDate();
     markCompletedArticles();
   });

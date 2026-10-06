@@ -12,9 +12,11 @@
 (function (global) {
   'use strict';
 
-  const NOTES = ['DO', 'RE', 'MI', 'FA', 'SOL', 'LA', 'SI'];
+  /* 1r ESO (?curs=1): graella 5×5 amb DO RE MI FA SOL i més pistes. 3r: 7×7. */
+  const CURS1 = typeof location !== 'undefined' && new URLSearchParams(location.search).get('curs') === '1';
+  const NOTES = CURS1 ? ['DO', 'RE', 'MI', 'FA', 'SOL'] : ['DO', 'RE', 'MI', 'FA', 'SOL', 'LA', 'SI'];
   const NOTES_SET = new Set(NOTES);
-  const N = 7;
+  const N = NOTES.length;
 
   /* PRNG determinístic */
   function mulberry32(seed) {
@@ -43,8 +45,9 @@
     const rng = mulberry32(seed);
     /* Base cíclica: row[r][c] = NOTES[(r+c) % 7] */
     const base = Array.from({length:N}, (_,r) => Array.from({length:N}, (_,c) => NOTES[(r+c) % N]));
-    const rowOrder = shuffled([0,1,2,3,4,5,6], rng);
-    const colOrder = shuffled([0,1,2,3,4,5,6], rng);
+    const idx = Array.from({length:N}, (_,i) => i);
+    const rowOrder = shuffled(idx, rng);
+    const colOrder = shuffled(idx, rng);
     const out = [];
     for (let r = 0; r < N; r++) {
       const row = [];
@@ -108,6 +111,12 @@
     }
   ];
 
+  /* 1r: 4 graelles 5×5, 2 pistes per fila (10 fixes, 15 per omplir). */
+  if (CURS1) PUZZLES.splice(0, PUZZLES.length, ...[42, 1729, 314, 6809].map((seed, k) => ({
+    solution: scrambledLatinSquare(seed),
+    fixedCells: Array.from({length:N}, (_,r) => [[r, (r * 2 + k) % N], [r, (r * 2 + k + 2) % N]]).flat()
+  })));
+
   let state = null;
   let boardEl = null;
   let hudEl = null;
@@ -156,7 +165,7 @@
 
     const legend = document.createElement('p');
     legend.className = 'notedoku__legend';
-    legend.innerHTML = `Omple la graella amb les set notes <strong>DO · RE · MI · FA · SOL · LA · SI</strong>. Cap nota es repeteix en cap <em>fila</em> ni <em>columna</em>. Escriu directament a les caselles buides; quan acabis, prem <strong>Comprovar</strong>.`;
+    legend.innerHTML = CURS1 ? `Omple la graella amb <strong>DO · RE · MI · FA · SOL</strong>. Cada nota surt un sol cop a cada <em>fila</em> i a cada <em>columna</em>. Quan acabis, prem <strong>Comprovar</strong>.` : `Omple la graella amb les set notes <strong>DO · RE · MI · FA · SOL · LA · SI</strong>. Cap nota es repeteix en cap <em>fila</em> ni <em>columna</em>. Escriu directament a les caselles buides; quan acabis, prem <strong>Comprovar</strong>.`;
     wrap.appendChild(legend);
 
     const grid = document.createElement('div');
@@ -293,7 +302,7 @@
   function handleWin() {
     state.solved = true;
     setTimeout(() => global.NotePass.Router.showVictory(
-      'Has resolt el Notedoku sense una sola dissonància. Les set notes en harmonia.'
+      CURS1 ? 'Has resolt el Notedoku. Molt bé!' : 'Has resolt el Notedoku sense una sola dissonància. Les set notes en harmonia.'
     ), 400);
   }
 
@@ -349,6 +358,11 @@
         text: 'Quan creguis que ho tens tot, prem el botó <strong>✓ Comprovar</strong> de dalt a la dreta. Les caselles correctes es pintaran de verd; les errònies, de vermell. Pots comprovar tantes vegades com vulguis.'
       }
     ];
+    if (CURS1) steps.splice(0, steps.length,
+      { text: 'És una graella de <strong>5×5</strong>. Cada fila i cada columna té <strong>DO · RE · MI · FA · SOL</strong>, un sol cop.' },
+      { text: 'Les caselles grises ja estan fetes: són pistes. Tu omples les blanques.', target: steps[1].target },
+      { text: 'Clica una casella blanca i escriu la nota. Et pots moure amb les fletxes.' },
+      { text: 'Quan acabis, prem <strong>✓ Comprovar</strong>. El verd està bé; el vermell, no.' });
     global.NotePass.Tutorial.run(steps, onDone);
   }
 
@@ -372,6 +386,11 @@
              'que totes encaixin.',
     metaTag: 'Lògica · Set notes · Sense ritme'
   };
+  if (CURS1) Object.assign(meta, {
+    pitch: 'Graella de notes 5×5 · DO RE MI FA SOL · 1r ESO',
+    context: 'Cinc notes, cinc files, cinc columnes. Cap nota es repeteix a la mateixa fila ni columna.',
+    metaTag: 'Lògica · Cinc notes'
+  });
 
   global.NotePass = global.NotePass || {};
   global.NotePass.Games = global.NotePass.Games || {};

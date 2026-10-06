@@ -30,6 +30,22 @@
       clue: 'Alteració que baixa una nota mig to; el seu símbol és ♭.' }
   ];
 
+  /* 1r ESO (?curs=1): pistes curtes, sense clau de fa ni alteracions.
+     FA passa a ser la nota; BEMOL es canvia per ESCALA (mateixa fila). */
+  const CURS1 = typeof location !== 'undefined' && new URLSearchParams(location.search).get('curs') === '1';
+  if (CURS1) {
+    const C1 = ['Signe del principi del pentagrama. Diu on és cada nota.',
+      'El pentagrama en té cinc.',
+      'Cada so musical. Al pentagrama és una rodona.',
+      'Quarta nota: DO, RE, MI, ...',
+      'La clau que fem servir a classe. També és una nota.',
+      'Sisena nota: DO, RE, MI, FA, SOL, ...'];
+    C1.forEach((t, i) => { ENTRIES[i].clue = t; });
+    delete ENTRIES[3].isFa;
+    ENTRIES[6] = { num: 7, dir: 'H', row: 7, col: 1, answer: 'ESCALA',
+      clue: 'DO, RE, MI, FA, SOL, LA, SI: les notes en ordre fan una ...' };
+  }
+
   let boardEl = null;
   let hudEl = null;
   let state = null;
@@ -297,7 +313,7 @@
   function handleWin() {
     state.solved = true;
     setTimeout(() => global.NotePass.Router.showVictory(
-      'Has completat el crucigrama. Set definicions, una sola distreta amb la clau de fa.'
+      CURS1 ? 'Has completat el crucigrama. Molt bé!' : 'Has completat el crucigrama. Set definicions, una sola distreta amb la clau de fa.'
     ), 500);
   }
 
@@ -349,6 +365,10 @@
         text: '<strong>Omple tot el crucigrama</strong> amb tranquil·litat i, quan acabis, prem el botó <strong>✓ Comprovar</strong> de dalt a la dreta. Les paraules correctes es pintaran de verd; les errònies, de vermell.'
       }
     ];
+    if (CURS1) steps.splice(0, steps.length,
+      { text: 'És un <strong>crucigrama</strong>. Escriu una lletra a cada casella blanca.' },
+      { text: 'Les pistes són al costat. Clica una pista i aniràs a la seva primera casella.' },
+      { text: 'Quan acabis, prem <strong>✓ Comprovar</strong>. El verd està bé; el vermell, no.' });
     global.NotePass.Tutorial.run(steps, onDone);
   }
 
@@ -363,6 +383,11 @@
              'reclama un coneixement més greu. Doneu-li tinta i ploma.',
     metaTag: 'Teoria · Clau de Sol + 1 pista de Clau de Fa'
   };
+  if (CURS1) Object.assign(meta, {
+    pitch: 'Crucigrama de notes · 1r ESO',
+    context: 'Set pistes sobre el pentagrama i les notes. Llegeix cada pista i escriu la paraula.',
+    metaTag: 'Teoria · Clau de sol'
+  });
 
   global.NotePass = global.NotePass || {};
   global.NotePass.Games = global.NotePass.Games || {};
