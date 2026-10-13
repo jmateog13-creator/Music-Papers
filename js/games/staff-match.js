@@ -96,11 +96,12 @@
   let hudEl = null;
   let levelIdx = 0;
   let state = null;
+  let hits = 0, misses = 0;   // precisió: diferències trobades / notes marcades a la còpia
 
   function init(_boardEl, _hudEl) {
     boardEl = _boardEl;
     hudEl   = _hudEl;
-    levelIdx = 0;
+    levelIdx = 0; hits = 0; misses = 0;
     buildLevel();
     render();
     updateHud();
@@ -114,7 +115,7 @@
 
   function reset() {
     /* Reinicia des del nivell I */
-    levelIdx = 0;
+    levelIdx = 0; hits = 0; misses = 0;
     buildLevel();
     render();
     updateHud();
@@ -264,6 +265,7 @@
         return;
       }
       if (state.errorIndices.has(idx)) {
+        hits++;
         state.found.add(idx);
         el.classList.add('is-found');
         const leftEl = boardEl.querySelector(`.staff-match__panel--left .note-target[data-id="n${idx}"]`);
@@ -275,6 +277,7 @@
         updateHud();
         if (state.found.size === state.total) handleLevelComplete();
       } else {
+        misses++;
         flashEl(el, 'is-miss');
         const leftEl = boardEl.querySelector(`.staff-match__panel--left .note-target[data-id="n${idx}"]`);
         if (leftEl) flashEl(leftEl, 'is-miss');
@@ -319,7 +322,8 @@
   function handleFinalWin() {
     state.solved = true;
     setTimeout(() => global.NotePass.Router.showVictory(
-      CURS1 ? 'Has trobat totes les diferències.' : 'Has dominat els cinc nivells. Cap diferència se t\'escapa.'
+      CURS1 ? 'Has trobat totes les diferències.' : 'Has dominat els cinc nivells. Cap diferència se t\'escapa.',
+      { errors: misses, precisio: (hits + misses) ? hits / (hits + misses) : 0 }
     ), 600);
   }
 

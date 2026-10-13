@@ -115,11 +115,11 @@
     }
   }
 
-  function showVictory(text) {
+  function showVictory(text, fets) {   // fets: precisio/errors opcionals del joc
     if (text) $('victory-text').textContent = text;
     $('victory-modal').hidden = false;
     if (gameId) markCompleted(gameId);
-    if (gameId && global.AulaTechBridge) global.AulaTechBridge.sendOnce(gameId, { completat: true });
+    if (gameId && global.AulaTechBridge) global.AulaTechBridge.sendOnce(gameId, Object.assign({ completat: true }, fets));
   }
 
   /* ── Wire-up ──────────────────────────────────────────────────────── */
