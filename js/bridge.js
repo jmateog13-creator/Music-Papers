@@ -36,7 +36,7 @@ const AulaTechBridge = (function (w) {
       f = f || {};
       const data = {
         p_juego_id: String(gameId || 'standalone'),
-        p_bloque: 'harmonia',
+        p_bloque: 'notes',
         p_tema: null,
         p_completado: !!f.completat,
         p_precision: clamp01(f.precisio),
